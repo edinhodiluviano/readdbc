@@ -52,14 +52,11 @@ def to_dbf(src: [str, Path], dest: [str, Path] = None, /) -> None:
         dest,
     ]
     proc = subprocess.run(cmd, capture_output=True, check=False)  # NOQA: S603
-    if proc.returncode == 0:
-        return None  # NOQA: RET501
     if proc.returncode > 0:
         dest.unlink()
         raise BlastError(
             code=proc.returncode, message=proc.stderr.decode('utf8'),
         )
-    raise NotImplementedError
 
 
 def _check_file(*, name: Path, extension: str) -> None:
