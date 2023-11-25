@@ -7,7 +7,7 @@ import pytest
 import readdbc
 
 
-def test_when_convert_COLEBR15_dbc_returns_none(tmpdir):
+def test_when_convert_colebr15_dbc_returns_none(tmpdir):
     given = readdbc.to_dbf('tests/COLEBR15.dbc', tmpdir / 'aaa')
     assert given is None
 
