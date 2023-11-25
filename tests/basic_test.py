@@ -17,6 +17,26 @@ def test_convert_doesnt_accept_named_args():
         readdbc.to_dbf(src='', dest='')
 
 
+def test_convert_with_invalid_dbc_file_raises_error(tmpdir):
+    source = tmpdir / 'aaa.dbc'
+    dest = tmpdir / 'aaa.dbf'
+    with open(source, 'wb') as f:
+        f.write(b'abc')
+    with pytest.raises(readdbc.BlastError):
+        readdbc.to_dbf(source, dest)
+
+
+def test_convert_with_invalid_dbc_create_no_dest_file(tmpdir):
+    source = tmpdir / 'aaa.dbc'
+    dest = tmpdir / 'aaa.dbf'
+    with open(source, 'wb') as f:
+        f.write(b'abc')
+    with pytest.raises(readdbc.BlastError):
+        readdbc.to_dbf(source, dest)
+    assert not dest.exists()
+
+
+
 def test_convert_doesnt_accept_non_dbc_extension_input_file(tmpdir):
     original_source = 'tests/COLEBR15.dbf'
     source = tmpdir / 'COLEBR15.dbf'
