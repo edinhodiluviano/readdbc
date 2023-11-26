@@ -1,5 +1,4 @@
 import os  # NOQA: D104
-import subprocess
 from pathlib import Path
 
 import cffi
@@ -40,10 +39,10 @@ def to_dbf(src: [str, Path], dest: [str, Path] = None, /) -> None:
     '''
 
     try:
-        import readdbc.blast.blastpy as blastpy
+        import readdbc.blast.blastpy as blastpy  # NOQA: PLR0402
     except ModuleNotFoundError:
         _build_blast()
-        import readdbc.blast.blastpy as blastpy
+        import readdbc.blast.blastpy as blastpy  # NOQA: PLR0402
 
     src = Path(src)
     _check_file(name=src, extension='dbc')
@@ -52,9 +51,8 @@ def to_dbf(src: [str, Path], dest: [str, Path] = None, /) -> None:
         dest = str(src).replace('.dbc', '.dbf')
     dest = Path(dest)
 
-    with open(src, 'rb') as src_fp:
-        with open(dest, 'wb') as dest_fp:
-            ret_code = blastpy.lib.dbc2dbf(src_fp, dest_fp)
+    with open(src, 'rb') as src_fp, open(dest, 'wb') as dest_fp:
+        ret_code = blastpy.lib.dbc2dbf(src_fp, dest_fp)
     if ret_code != 0:
         dest.unlink()
         raise BlastError(code=ret_code, message='')
