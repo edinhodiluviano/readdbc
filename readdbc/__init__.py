@@ -1,4 +1,5 @@
-import os  # NOQA: D104
+import cffi  # NOQA: D104
+import os
 import subprocess
 from pathlib import Path
 
@@ -62,5 +63,21 @@ def to_dbf(src: [str, Path], dest: [str, Path] = None, /) -> None:
 def _check_file(*, name: Path, extension: str) -> None:
     expected_end = '.' + extension.lower()
     if not str(name).lower().endswith(expected_end):
-        msg =f'file "{name}" is expected to have {extension=}'
+        msg = f'file "{name}" is expected to have {extension=}'
         raise ValueError(msg)
+
+
+def _build_blast() -> None:
+    ffibuilder = cffi.FFI()
+
+    ffibuilder.cdef(csource='int dbc2dbf(FILE* input, FILE* output);')
+
+    build_folder = Path(os.path.realpath(__file__)).parent / 'blast'
+    code_file = build_folder / 'blast-dbf.c'
+    with open(code_file) as f:
+        code = f.read()
+    ffibuilder.set_source(
+        module_name='blastpy', source=code, sources=['blast.c']
+    )
+
+    ffibuilder.compile(tmpdir=build_folder)
