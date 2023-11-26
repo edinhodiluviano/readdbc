@@ -40,16 +40,28 @@ jobs:
       - name: Install dependencies
         run: |
           python -m venv .venv
-          source .venv/bin/activate
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            ./.venv/Scripts/activate.bat
+          else
+            source .venv/bin/activate
+          fi
           pip install poetry
           poetry install
 
       - name: Static analysis
         run: |
-          source .venv/bin/activate
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            ./.venv/Scripts/activate.bat
+          else
+            source .venv/bin/activate
+          fi
           ruff check readdbc/ tests/
 
       - name: Run unit tests
         run: |
-          source .venv/bin/activate
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            ./.venv/Scripts/activate.bat
+          else
+            source .venv/bin/activate
+          fi
           pytest
