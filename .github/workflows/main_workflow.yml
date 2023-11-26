@@ -26,6 +26,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Validate python version
+        if: runner.os == 'Linux'
         run: |
           pythonVersion=$(python --version 2>&1)
           if [[ $pythonVersion == "Python ${{ matrix.python-version }}"* ]];
