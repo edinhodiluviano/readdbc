@@ -37,31 +37,36 @@ jobs:
             exit 1
           fi
 
-      - name: Install dependencies
+      - name: Install dependencies on Unix
         run: |
           python -m venv .venv
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            ./.venv/Scripts/activate.bat
-          else
-            source .venv/bin/activate
-          fi
+          source .venv/bin/activate
           pip install poetry
           poetry install
 
-      - name: Static analysis
+      - name: Static analysis on Unix
         run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            ./.venv/Scripts/activate.bat
-          else
-            source .venv/bin/activate
-          fi
+          source .venv/bin/activate
           ruff check readdbc/ tests/
 
-      - name: Run unit tests
+      - name: Run unit tests on Unix
         run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            ./.venv/Scripts/activate.bat
-          else
-            source .venv/bin/activate
-          fi
+          source .venv/bin/activate
+          pytest
+
+      - name: Install dependencies on Windows
+        run: |
+          python -m venv .venv
+          ./.venv/Scripts/activate.bat
+          pip install poetry
+          poetry install
+
+      - name: Static analysis on Windows
+        run: |
+          ./.venv/Scripts/activate.bat
+          ruff check readdbc/ tests/
+
+      - name: Run unit tests on Windows
+        run: |
+          ./.venv/Scripts/activate.bat
           pytest
