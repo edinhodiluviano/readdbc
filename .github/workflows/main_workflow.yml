@@ -64,4 +64,4 @@ jobs:
           ./.venv/Scripts/activate.bat
           pip install poetry
           poetry install
-          pytest
+          poetry run pytest
