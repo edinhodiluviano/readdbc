@@ -1,7 +1,8 @@
-import cffi  # NOQA: D104
-import os
+import os  # NOQA: D104
 import subprocess
 from pathlib import Path
+
+import cffi
 
 
 class BlastError(Exception):
@@ -77,7 +78,7 @@ def _build_blast() -> None:
     with open(code_file) as f:
         code = f.read()
     ffibuilder.set_source(
-        module_name='blastpy', source=code, sources=['blast.c']
+        module_name='blastpy', source=code, sources=['blast.c'],
     )
 
     ffibuilder.compile(tmpdir=build_folder)
