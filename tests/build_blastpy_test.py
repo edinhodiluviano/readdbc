@@ -1,5 +1,6 @@
 import contextlib
 import os
+import sys
 from pathlib import Path
 
 import pytest
@@ -12,12 +13,15 @@ BLAST_FOLDER = Path('readdbc/blast')
 @pytest.fixture(autouse=True)
 def _remove_blastpy():
     def _remove():
+        # remove from disk
         files = os.listdir(BLAST_FOLDER)
-        for file in filter(lambda f: f.startswith('blastpy'), files):
-            with contextlib.suppress(FileNotFoundError):
-                (BLAST_FOLDER / file).unlink()
         with contextlib.suppress(FileNotFoundError):
             (BLAST_FOLDER / 'blast.o').unlink()
+            for file in filter(lambda f: f.startswith('blastpy'), files):
+                (BLAST_FOLDER / file).unlink()
+
+        # remove from modules cache
+        sys.modules.pop('readdbc.blast.blastpy', None)
 
     _remove()
     yield

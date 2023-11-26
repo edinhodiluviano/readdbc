@@ -39,6 +39,12 @@ def to_dbf(src: [str, Path], dest: [str, Path] = None, /) -> None:
         if the input file can't be processed by blast-dbf decompression tool
     '''
 
+    try:
+        import readdbc.blast.blastpy as blastpy
+    except ModuleNotFoundError:
+        _build_blast()
+        import readdbc.blast.blastpy as blastpy
+
     src = Path(src)
     _check_file(name=src, extension='dbc')
 
@@ -46,19 +52,12 @@ def to_dbf(src: [str, Path], dest: [str, Path] = None, /) -> None:
         dest = str(src).replace('.dbc', '.dbf')
     dest = Path(dest)
 
-    this_folder = Path(os.path.realpath(__file__)).parent
-    blast_cmd = this_folder / 'blast-dbf'
-    cmd = [
-        blast_cmd,
-        src,
-        dest,
-    ]
-    proc = subprocess.run(cmd, capture_output=True, check=False)  # NOQA: S603
-    if proc.returncode > 0:
+    with open(src, 'rb') as src_fp:
+        with open(dest, 'wb') as dest_fp:
+            ret_code = blastpy.lib.dbc2dbf(src_fp, dest_fp)
+    if ret_code != 0:
         dest.unlink()
-        raise BlastError(
-            code=proc.returncode, message=proc.stderr.decode('utf8'),
-        )
+        raise BlastError(code=ret_code, message='')
 
 
 def _check_file(*, name: Path, extension: str) -> None:
