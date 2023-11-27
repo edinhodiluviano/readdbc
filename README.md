@@ -10,6 +10,13 @@ import readdbc
 readdbc.dbc2dbf('COLEBR15.dbc', 'COLEBR15.dbf')
 ```
 
+Esse descompacta e ja converte para .csv:
+```
+import readdbc
+
+readdbc.dbc2csv('COLEBR15.dbc', 'COLEBR15.csv')
+```
+
 
 # Suporte
 O pacote é testado em todas as versões oficiais do python (3.8 até a 3.12).  
