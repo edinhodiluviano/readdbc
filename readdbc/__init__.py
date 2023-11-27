@@ -70,7 +70,7 @@ def _check_file(*, name: Path, extension: str) -> None:
 
 def dbc2csv(src: [str, Path], dest: [str, Path] = None, /) -> None:
     '''
-    Convert a source .dbf file to a .csv destination file.
+    Convert a source .dbc file to a .csv destination file.
 
     Attributes
     ----------
