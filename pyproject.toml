@@ -12,9 +12,9 @@ cffi = "^1.16.0"
 
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.4.3"
 pytest-cov = "^4.1.0"
 ruff = "^0.1.6"
+pytest = "^7.4.3"
 
 [build-system]
 requires = ["poetry-core"]
