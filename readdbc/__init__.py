@@ -1,7 +1,10 @@
-import os  # NOQA: D104
+import contextlib  # NOQA: D104
+import os
+import tempfile
 from pathlib import Path
 
 import cffi
+import simpledbf
 
 
 class BlastError(Exception):
@@ -20,7 +23,7 @@ class BlastError(Exception):
         super().__init__(f'{code=}    {message=}')
 
 
-def to_dbf(src: [str, Path], dest: [str, Path] = None, /) -> None:
+def dbc2dbf(src: [str, Path], dest: [str, Path] = None, /) -> None:
     '''
     Convert a source .dbc file to a .dbf destination file.
 
@@ -63,6 +66,34 @@ def _check_file(*, name: Path, extension: str) -> None:
     if not str(name).lower().endswith(expected_end):
         msg = f'file "{name}" is expected to have {extension=}'
         raise ValueError(msg)
+
+
+def dbc2csv(src: [str, Path], dest: [str, Path] = None, /) -> None:
+    '''
+    Convert a source .dbf file to a .csv destination file.
+
+    Attributes
+    ----------
+    src: str, Path
+        the file to read the .dbf from.
+    dest: str, Path [optional]
+        the file to write the .csv to.
+        if missing, then it will infer the same dir and filename as src
+    '''
+    src = Path(src)
+    _check_file(name=src, extension='dbc')
+
+    if dest is None:
+        dest = str(src).replace('.dbc', '.csv')
+    dest = Path(dest)
+
+    file = tempfile.NamedTemporaryFile()
+    try:
+        dbc2dbf(src, file.name)
+        simpledbf.Dbf5(file.name).to_csv(dest)
+    finally:
+        with contextlib.suppress(FileNotFoundError):
+            file.close()
 
 
 def _build_blast() -> None:

@@ -287,6 +287,16 @@ testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8-2020", "ini2toml[l
 testing-integration = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "packaging (>=23.1)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
 [[package]]
+name = "simpledbf"
+version = "0.2.6"
+description = "Convert DBF files to CSV, DataFrames, HDF5 tables, and SQL tables. Python3 compatible."
+optional = false
+python-versions = "*"
+files = [
+    {file = "simpledbf-0.2.6.tar.gz", hash = "sha256:345d4f1e58549c4a6ad8079d6ed65ad8550ccdc1acd8444a946cdb04d0212af4"},
+]
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -300,4 +310,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "84924bcf8907f11610f7a67138c2b24cfb3f610a5c579d2cd446f4170fac0d94"
+content-hash = "425d01d6e72bbded890e0d68f437e99921ed750a9f8969fa0ef82170a83e1d54"

@@ -10,6 +10,7 @@ readme = "README.md"
 python = "^3.8"
 cffi = "^1.16.0"
 setuptools = ">=56"
+simpledbf = "^0.2.6"
 
 [tool.poetry.group.dev.dependencies]
 pytest-cov = "^4.1.0"
